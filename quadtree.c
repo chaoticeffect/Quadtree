@@ -11,17 +11,8 @@
 
 
 
-/*void initialize(int[65][65]);
-void initialize(int array[65][65])
-	{
-		for (int i=0;i<64;i++)
-		{
-			for (int j=0;j<64;j++)
-			{
-				array[i][j]=0;
-			}
-		}
-	}*/
+
+
 
 struct node
 {
@@ -35,12 +26,20 @@ struct node
 	int ypos;
 	int size;
 };
-
 void nodeConvert(int Array[65][65])
 {
 	
 }
-
+void initialize(int array[65][65])
+	{
+		for (int i=0;i<64;i++)
+		{
+			for (int j=0;j<64;j++)
+			{
+				array[i][j]=0;
+			}
+		}
+	}
 void write(int Array[65][65], int inputarray[][2], int numpix)
 {	
 
@@ -83,29 +82,34 @@ void readfile(FILE *fp, int numpix, int inputarray[][2])
 int main(int argc, char *argv[])
 {
 	int tempArray[65][65]={0};
-	
+	initialize(tempArray);
 	FILE *fp;
-	printf("check1");
-	int i, size, numpix;
-	printf("check2");
+	//printf("check1\n");
+	int i, size, numpix, x, y;
+	//printf("check2\n");
 	fp = fopen(argv[1], "r");
-	printf("check3");
+	//printf("check3\n");
 	fscanf(fp,"%i",&size);
-	printf("check4");
+	//printf("check4\n");
 	fscanf(fp,"%i",&numpix);
-	printf("check5");
-	int inputarray[size+1][2];
-	printf("check6");
+	//printf("check5\n");
+	int inputarray[numpix+1][2];
+	//printf("check6\n");
 
-	for(i=1;i<=numpix;i++)
+	/*for(i=1;i<=numpix;i++)
 	{
-		fscanf(fp,"%i %i",&inputarray[i][0],&inputarray[i][1]);
-	}
-	printf("check7");
-	
+		printf("count1 %i\n", i);
+		fscanf(fp,"%i %i",&x,&y);
+		inputarray[i][0]=x;
+		printf("count2 %i\n", i);
+		inputarray[i][1]=y;
+		printf("count3 %i\n", i);
+		
+	}*/
 	
 	readfile(fp, numpix, inputarray);
 	
+	//printf("check7\n");
 	/*temporary coordinates for testing
 	int testarray[TESTNUMPIX+1][2];
 	size = TESTSIZE;
