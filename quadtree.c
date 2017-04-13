@@ -26,8 +26,63 @@ struct node
 	int ypos;
 	int size;
 };
-void nodeConvert(int Array[65][65])
+int nodeConvert(int Array[65][65], struct node current, int size)
 {
+	int mid;
+	struct node NE,NW,SE,SW;
+	mid=current.size/2;
+	//printf("check1\n");
+	
+	//mid+1
+	
+	if(current.size == 1)
+	{
+		current.colour=Array[current.xpos][current.ypos];
+		printf("%i",current.colour);
+		if(current.xpos==size-1)
+		{
+			printf("\n");
+		}
+		return 0;
+	}
+	
+	if(current.size >= 1)
+	{   
+		current.colour=GRAY;
+		current.NE=&NE;
+		current.SE=&SE;
+		current.NW=&NW;
+		current.SW=&NW;
+		NE.xpos=current.xpos;
+		NE.ypos=current.ypos;
+		NE.size=current.size/2;
+		NE.parent=&current;
+	    nodeConvert(Array, NE,size);
+		NW.xpos=(current.xpos+mid);
+		NW.ypos=current.ypos;
+		NW.size=current.size/2;
+		NW.parent=&current;
+		nodeConvert(Array, NW,size);
+		SE.xpos=current.xpos;
+		SE.ypos=(current.ypos+mid);
+		SE.size=current.size/2;
+		SE.parent=&current;
+		nodeConvert(Array, SE,size);
+		SW.xpos=(current.xpos+mid);
+		SW.ypos=(current.ypos+mid);
+		SW.size=current.size/2;
+		SW.parent=&current;
+		nodeConvert(Array, SW,size);
+		
+		return 0;
+	}
+	
+	else 
+	{
+		exit(EXIT_FAILURE); 
+	}
+	
+	
 	
 }
 void initialize(int array[65][65])
@@ -67,6 +122,7 @@ void printArray(int Array[65][65],int size)
 		}
 		printf("\n");
 	}
+	printf("\n");
 }
 
 void readfile(FILE *fp, int numpix, int inputarray[][2])
@@ -88,59 +144,30 @@ int main(int argc, char *argv[])
 	int i, size, numpix, x, y;
 	//printf("check2\n");
 	fp = fopen(argv[1], "r");
-	//printf("check3\n");
+	printf("check3\n");
 	fscanf(fp,"%i",&size);
-	//printf("check4\n");
+	printf("check4\n");
 	fscanf(fp,"%i",&numpix);
 	//printf("check5\n");
 	int inputarray[numpix+1][2];
 	//printf("check6\n");
-
-	/*for(i=1;i<=numpix;i++)
-	{
-		printf("count1 %i\n", i);
-		fscanf(fp,"%i %i",&x,&y);
-		inputarray[i][0]=x;
-		printf("count2 %i\n", i);
-		inputarray[i][1]=y;
-		printf("count3 %i\n", i);
-		
-	}*/
-	
 	readfile(fp, numpix, inputarray);
-	
 	//printf("check7\n");
-	/*temporary coordinates for testing
-	int testarray[TESTNUMPIX+1][2];
-	size = TESTSIZE;
-	numpix = TESTNUMPIX;
-	testarray[1][0] = 4;testarray[1][1] = 1;
-	testarray[2][0] = 5;testarray[2][1] = 1;
-	testarray[3][0] = 2;testarray[3][1] = 2;
-	testarray[4][0] = 3;testarray[4][1] = 2;
-	testarray[5][0] = 4;testarray[5][1] = 2;
-	testarray[6][0] = 5;testarray[6][1] = 2;
-	testarray[7][0] = 2;testarray[7][1] = 3;
-	testarray[8][0] = 3;testarray[8][1] = 3;
-	testarray[9][0] = 4;testarray[9][1] = 3;
-	testarray[10][0] = 5;testarray[10][1] = 3;
-	testarray[11][0] = 4;testarray[11][1] = 4;
-	testarray[12][0] = 5;testarray[12][1] = 4;
-	testarray[13][0] = 6;testarray[13][1] = 4;
-	testarray[14][0] = 4;testarray[14][1] = 5;
-	testarray[15][0] = 5;testarray[15][1] = 5;
-	
-	write(tempArray,testarray,numpix);
-	
-	*/
 	
 	//currently writes testarray into tempArray as pixels
 	write(tempArray,inputarray, numpix);
 	//tests contents of Temparray
 	printArray(tempArray, size);
 	//converts tempArray into a pointer based node system
-	nodeConvert(tempArray);
 	
+	//define Layer0
+	struct node layer0;
+	layer0.xpos=1;
+	layer0.ypos=1;
+	layer0.colour=2;
+	layer0.size=size;
+	
+	nodeConvert(tempArray, layer0, size);
 	fclose(fp);	
 }
 
