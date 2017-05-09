@@ -233,7 +233,7 @@ void freeAll(struct node* current)
 		current->NW==NULL&&
 		current->SW==NULL)
 	{
-		printf("freeing current\n");
+		/*printf("freeing current\n");*/
 		free(current);
 		return;
 	}
@@ -244,20 +244,20 @@ void freeAll(struct node* current)
 	}
 	else
 	{
-		printf("freeing NE\n");
+		/*printf("freeing NE\n");*/
 		freeAll(current->NE);
-		printf("freeing NW\n");
+		/*printf("freeing NW\n");*/
 		freeAll(current->NW);
-		printf("freeing SE\n");
+		/*printf("freeing SE\n");*/
 		freeAll(current->SE);
-		printf("freeing SW\n");
+		/*printf("freeing SW\n");*/
 		freeAll(current->SW);
 		return;
 	}
 }
 	
 void identifyBlackNode(struct node* current)
-
+{
 	/*printf("currentpos = [%i][%i]\n", current->xpos, current->ypos);*/
 	
 	if(current->colour == BLACK)
@@ -297,6 +297,7 @@ void identifyBlackNode(struct node* current)
 		printf("exit FAILURE\n");
 		exit(EXIT_FAILURE); 
 	}
+}
 
 
 int main(int argc, char *argv[])
@@ -335,15 +336,15 @@ int main(int argc, char *argv[])
 	
 	/*printArray(tempArray, size, 0, 0);*/
 	struct node *parent=NULL;
-	/*converts tempArray into a pointer based struct node system*/
+	/*creates and defines parent node*/
 	createNode(&parent);
-	/*defines parent*/
+	
 	parent->parent=NULL;
 	parent->xpos=0;
 	parent->ypos=0;
 	parent->colour=GRAY;
 	parent->size=size;
-	
+	/*converts tempArray into a pointer based struct node system*/
 	NodefromArray(tempArray, parent, size);
 	/*printf("NodefromArray complete\n\n");
 	
@@ -352,9 +353,11 @@ int main(int argc, char *argv[])
 	
 	identifyBlackNode(parent);
 	
+	printf("\n");
+	
 	/*printArray(printingarray, size, 0, 0);*/
 	
-	/*freeAll(parent);*/
+	freeAll(parent);
 	
 	
 }
